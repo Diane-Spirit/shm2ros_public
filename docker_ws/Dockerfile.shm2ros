@@ -1,0 +1,9 @@
+FROM dustynv/ros:humble-desktop-l4t-r36.4.0
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt upgrade -y
+
+WORKDIR /root/
+RUN mkdir -p ros2_ws/src
+WORKDIR /root/ros2_ws/src

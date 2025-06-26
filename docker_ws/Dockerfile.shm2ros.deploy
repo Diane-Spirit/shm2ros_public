@@ -1,0 +1,17 @@
+FROM dustynv/ros:humble-desktop-l4t-r36.4.0
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt upgrade -y
+
+WORKDIR /root/
+
+COPY ./ros2_ws /root/ros2_ws
+
+WORKDIR /root/ros2_ws
+RUN /bin/bash -c "source /opt/ros/humble/install/setup.bash && \
+    colcon build && \
+    source install/local_setup.bash"
+
+RUN /bin/bash -c 'echo "source /opt/ros/humble/install/setup.bash" >> /root/.bashrc'
+RUN /bin/bash -c 'echo "source /root/ros2_ws/install/local_setup.bash" >> /root/.bashrc'

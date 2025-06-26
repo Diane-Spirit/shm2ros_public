@@ -1,0 +1,10 @@
+shm2ros:
+  ros__parameters:
+    shm_read_st: 0.01
+    twist_pub_st: 0.01
+    twist_topic: 'cmd_vel'
+    same_msg_limit: 3.
+    shm_file: '/dev/shm/shared_control'
+    shm_file_size: 52
+    shm_semaphore: '/dev/shm/semaphore_ros_read'
+    shm_semaphore_size: 5
