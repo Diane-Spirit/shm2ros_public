@@ -1,20 +1,15 @@
-# shm2ros
+# **DIANE Project: shm2ros**  
+*ROS2 Relay Node for Shared Memory Data Integration*  
 
-This repository implements a ROS2 relay node that reads velocity data from shared memory and publishes it to ROS2 topics. It is designed to bridge data from a shared memory interface (e.g., from a low-level controller or simulator) to the ROS2 ecosystem, enabling integration with other ROS2 nodes.
+## Overview  
+This repository implements a **ROS2 relay node** that reads velocity data from **shared memory** and publishes it to ROS2 topics. It bridges data from low-level controllers or simulators to the ROS2 ecosystem, enabling seamless integration with other ROS2 nodes.
 
-## Data Structure
+---
 
-The shared memory segment is expected to contain the following structure:
-
-- **Counter**: int32 (4 bytes)
-- **Linear velocity X**: float64 (8 bytes)
-- **Linear velocity Y**: float64 (8 bytes)
-- **Linear velocity Z**: float64 (8 bytes)
-- **Angular velocity X**: float64 (8 bytes)
-- **Angular velocity Y**: float64 (8 bytes)
-- **Angular velocity Z**: float64 (8 bytes)
-
-**NOTE:** Linear velocities Y and Z and angular velocities X and Y are expected to be 0 since the system is controlling a differential drive.
+## Key Features  
+- **Shared Memory Interface**: Reads structured data from a shared memory segment.  
+- **ROS2 Compatibility**: Publishes data to ROS2 topics for downstream processing.  
+- **Containerization**: Supports Docker deployment for scalable and portable execution.  
 
 ---
 
@@ -33,50 +28,65 @@ The shared memory segment is expected to contain the following structure:
 
 ---
 
-## Setup and Usage
+## Setup and Usage  
 
-### 1. Build the ROS2 Workspace
-
+### 1. **Build the ROS2 Workspace**  
 ```bash
 cd ros2_ws
 colcon build
 source install/local_setup.bash
 ```
 
-### 2. Configure Parameters (Optional)
+### 2. **Configure Parameters**  (optional) 
+Edit `shm2ros_params.yaml` to set:  
+- Shared memory key  
+- ROS2 topic names  
+- Other runtime parameters  
 
-Edit `ros2_ws/src/shm2ros/config/shm2ros_params.yaml` to set shared memory keys, topic names, or other parameters as needed.
-
-### 3. Docker Deployment
-
-To build and run the node in a Docker container, use the scripts in `docker_ws/`:
-
+### 3. **Docker Deployment**  
+Build and run the node in a container:  
 ```bash
-./docker_ws/build_shm2ros.sh
+cd docker_ws
+./build_shm2ros.sh
 ./docker_run.sh
 ```
 
-### 4. Run the Node
-
-From the container, you can launch the node using the provided launch file:
-
+### 4. **Run the Node**  
+From the container:  
 ```bash
 ros2 launch shm2ros shm2ros.launch.py
 ```
-
-Or run directly (for deployment):
-
+Or for deployment:  
 ```bash
 ./docker_run_deploy.sh
 ```
 
 ---
 
-## Additional Notes
+## Data Structure  
 
-- Make sure the shared memory segment is being written to by the expected producer process.
-- The node expects the shared memory to be formatted as described above.
-- For more details, see the code in `shm2ros/shm_api.py` and `shm2ros/shm2ros.py`.
+The shared memory segment must contain the following data (in order):  
+- **Counter**: `int32` (4 bytes)  
+- **Linear velocity X**: `float64` (8 bytes)  
+- **Linear velocity Y**: `float64` (8 bytes)  
+- **Linear velocity Z**: `float64` (8 bytes)  
+- **Angular velocity X**: `float64` (8 bytes)  
+- **Angular velocity Y**: `float64` (8 bytes)  
+- **Angular velocity Z**: `float64` (8 bytes)  
+
+> **Note**: Y, Z linear velocities and X, Y angular velocities are typically zero for differential drive systems.  
+
+---
+
+## Additional Notes  
+- Ensure the shared memory segment is populated by the producer process.  
+- For debugging, inspect `shm2ros/shm_api.py` and `shm2ros/shm2ros.py`.
+
+---
+
+## Contributions  
+- **Reporting Issues**: Use the GitHub Issues tracker.  
+- **Code Contributions**: Fork the repository, implement changes, and submit a pull request.  
 
 ---
 
